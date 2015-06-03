@@ -35,14 +35,14 @@ function plural(lang, n) {
 module.exports = new GettextPlease({
   language: 'ru',
   data: {
-    "applesCount.plural0": "{count} яблоко",
-    "applesCount.plural1": "{count} яблока",
-    "applesCount.plural2": "{count} яблок",
-    "userWelcomeMessageWithMessagesLink":
-      "Привет, {username}, у тебя есть новые <messagesLink>сообщения</messagesLink>!"
+    'applesCount.plural0': '{count} яблоко',
+    'applesCount.plural1': '{count} яблока',
+    'applesCount.plural2': '{count} яблок',
+    'youGotMessages':
+      'Привет, {username}, у тебя есть новые <messagesLink>сообщения</messagesLink>!'
   },
   pluralizeKey: function(key, num) {
-    return key + ".plural" + plural(this.language, num)
+    return key + '.plural' + plural(this.language, num)
   }
 });
 ```
@@ -51,29 +51,29 @@ module.exports = new GettextPlease({
 module.exports = new GettextPlease({
   language: 'en',
   data: {
-    "applesCount.plural0": "{count} apple",
-    "applesCount.plural1": "{count} apples",
-    "userWelcomeMessageWithMessagesLink":
-      "Hi, {username}, you got new <messagesLink>messages</messagesLink>!"
+    'applesCount.plural0': '{count} apple',
+    'applesCount.plural1': '{count} apples',
+    'youGotMessages':
+      'Hi, {username}, you got new <messagesLink>messages</messagesLink>!'
   }
 });
 ```
 
-And there comes magic in your modules
+Using in components
 ```jsx
 var {gettextr, gettextn} = require('your_i18_module');
 
-gettextr("userWelcomeMessageWithMessagesLink", {
-  username: "anmi",
+gettextr('youGotMessages', {
+  username: 'anmi',
   messagesLink: (children) => <messagesLink>{children}</messagesLink>
 });
 /* =>
-["Hi, anmi, you got new ", <messagesLink>messages</messagesLink>, "!"]
+['Hi, anmi, you got new ', <messagesLink>messages</messagesLink>, '!']
 */
 
-gettextn("applesCount", 5, {count: 5});
+gettextn('applesCount', 5, {count: 5});
 /* =>
-["5 apples"]
+'5 apples'
 */
 ```
 You can use methods gettextr and gettextrn if you need to wrap part of message
@@ -81,9 +81,11 @@ into component.
 
 All methods
 ```js
+Returns string
 .gettext(key); // gettext without context
 .gettextp(key, context); // parametrized gettext
 .gettextn(key, num, context); // .gettextp with pluralization by num
+Returns array
 .gettextr(key, context); // parametrized gettext with wrapping functions as arguments
 .gettextrn(key, num, context); // .gettextr with pluralization by num
 ```

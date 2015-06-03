@@ -1,0 +1,30 @@
+{
+  "name": "gettext-please",
+  "version": "0.0.1",
+  "description": "parametrized gettext for react",
+  "main": "src/gettext-please.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anmi/gettext-please.git"
+  },
+  "keywords": [
+    "javascript",
+    "gettext",
+    "React",
+    "template"
+  ],
+  "author": "Andrei Miroshnik",
+  "license": "MIT",
+  "homepage": "https://github.com/anmi/gettext-please",
+  "dependcies": {
+    "react-rich-text-template": "^0.0.2"
+  },
+  "devDependencies": {
+    "react-rich-text-template": "^0.0.2",
+    "mocha": "^2.2.1",
+    "chai": "^2.3.0"
+  }
+}
