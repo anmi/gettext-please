@@ -39,7 +39,7 @@ module.exports = new GettextPlease({
     "applesCount.plural1": "{count} яблока",
     "applesCount.plural2": "{count} яблок",
     "userWelcomeMessageWithMessagesLink":
-      "Привет, {username}, у тебя естьновые <messagesLink>сообщения</messagesLink>!"
+      "Привет, {username}, у тебя есть новые <messagesLink>сообщения</messagesLink>!"
   },
   pluralizeKey: function(key, num) {
     return key + ".plural" + plural(this.language, num)
