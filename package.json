@@ -1,6 +1,6 @@
 {
   "name": "gettext-please",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "parametrized gettext for react",
   "main": "src/gettext-please.js",
   "scripts": {
