@@ -77,6 +77,30 @@ describe('gettextp', function() {
       'Hello, anmi'
     );
   });
+
+  it('should be able to fallback and return key', function() {
+    assert.deepEqual(
+      (new GettextPlease(enOpts))
+        .gettextp('missing {key}', {
+          key: 'shouldn\t pass'
+        }),
+      'missing {key}'
+    );
+  });
+
+  it('should be able to process missing key as value', function() {
+    var opts = Object.create(enOpts);
+
+    opts.processMissingAsKey = true;
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .gettextp('you shall {key}', {
+          key: 'pass'
+        }),
+      'you shall pass'
+    );
+  });
 });
 
 describe('gettextn', function() {
@@ -154,6 +178,30 @@ describe('gettextr', function() {
         }
       ]
     )
+  });
+
+  it('should be able to fallback and return key', function() {
+    assert.deepEqual(
+      (new GettextPlease(enOpts))
+        .gettextr('missing {key}', {
+          key: 'shouldn\t pass'
+        }),
+      ['missing {key}']
+    );
+  });
+
+  it('should be able to process missing key as value', function() {
+    var opts = Object.create(enOpts);
+
+    opts.processMissingAsKey = true;
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .gettextr('you shall {key}', {
+          key: 'pass'
+        }),
+      ['you shall pass']
+    );
   });
 });
 

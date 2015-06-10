@@ -79,6 +79,31 @@ gettextn('applesCount', 5, {count: 5});
 You can use methods gettextr and gettextrn if you need to wrap part of message
 into component.
 
+In case of missing key, you can process key as value, or keep key as is
+```js
+var gettextPlease = new GettextPlease({
+  language: 'en',
+  data: {}
+});
+
+gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
+/* =>
+'Hello, {username}'
+*/
+```
+```js
+var gettextPlease = new GettextPlease({
+  processMissingAsKey: true,
+  language: 'en',
+  data: {}
+});
+
+gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
+/* =>
+'Hello, anmi'
+*/
+```
+
 All methods
 ```js
 Returns string

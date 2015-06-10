@@ -13,6 +13,7 @@ function GettextPlease(opts) {
   this.language = opts.language;
   this.data = opts.data;
   this.pluralizeKey = opts.pluralizeKey;
+  this.processMissingAsKey = opts.processMissingAsKey;
   this.defaultRichParams = opts.defaultRichParams || {};
 
   this.cachedRrtt = {};
@@ -34,12 +35,28 @@ GettextPlease.prototype = {
     });
   },
 
+  hasKey: function(key) {
+    return key in this.data;
+  },
+
   gettext: function(key) {
-    return this.data[key];
+    if (this.hasKey(key)) {
+      return this.data[key];
+    } else {
+      return key;
+    }
   },
 
   gettextp: function(key, ctx) {
-    return applyCtx(this.gettext(key), ctx);
+    if (this.hasKey(key)) {
+      return applyCtx(this.gettext(key), ctx);
+    } else {
+      if (this.processMissingAsKey) {
+        return applyCtx(key, ctx);
+      } else {
+        return key;
+      }
+    }
   },
 
   gettextn: function(key, num, ctx) {
@@ -47,11 +64,16 @@ GettextPlease.prototype = {
   },
 
   gettextr: function(key, ctx) {
-    if (!this.cachedRrtt[key]) {
-      this.cachedRrtt[key] = rrtt.compile(this.gettext(key));
-    }
+    var template = this.gettext(key);
+    if (this.hasKey(key) || this.processMissingAsKey) {
+      if (!this.cachedRrtt[key]) {
+        this.cachedRrtt[key] = rrtt.compile(this.gettext(key));
+      }
 
-    return this.cachedRrtt[key](ctx);
+      return this.cachedRrtt[key](ctx);
+    } else {
+      return [key];
+    }
   },
 
   gettextrn: function(key, num, ctx) {
