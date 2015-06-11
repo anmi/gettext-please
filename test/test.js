@@ -223,3 +223,45 @@ describe('gettextrn', function() {
     });
   });
 });
+
+describe('processMissingKey option', function() {
+  it('should return callback value', function() {
+    var opts = Object.create(enOpts);
+
+    opts.processMissingKey = function(key, ctx) {
+      return 'KEY MISSING ' + key;
+    };
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .gettextr('someMissing.key', {
+          foo: 'bar'
+        }),
+      'KEY MISSING someMissing.key'
+    );
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .gettextp('someMissing.key', {
+          foo: 'bar'
+        }),
+      'KEY MISSING someMissing.key'
+    );
+  });
+
+  it('should prcess existing key as regular', function() {
+    var opts = Object.create(enOpts);
+
+    opts.processMissingKey = function(key, ctx) {
+      return 'KEY MISSING ' + key;
+    };
+
+    assert.equal(
+      (new GettextPlease(opts))
+        .gettextp('userGreetings', {
+          username: 'anmi'
+        }),
+      'Hello, anmi'
+    );
+  });
+});

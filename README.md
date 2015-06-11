@@ -104,6 +104,22 @@ gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
 */
 ```
 
+If you want manually handle missing key, specify option processMissingKey
+```js
+var gettextPlease = new GettextPlease({
+  processMissingKey: function(key, params) {
+    return 'Missing key: ' + key;
+  },
+  language: 'en',
+  data: {}
+});
+
+gettextPlease.gettextp('userGreetings', {username: 'anmi'});
+/* =>
+'Missing key: userGreetings'
+*/
+```
+
 All methods
 ```js
 Returns string

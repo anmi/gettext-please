@@ -14,6 +14,7 @@ function GettextPlease(opts) {
   this.data = opts.data;
   this.pluralizeKey = opts.pluralizeKey;
   this.processMissingAsKey = opts.processMissingAsKey;
+  this.processMissingKey = opts.processMissingKey;
   this.defaultRichParams = opts.defaultRichParams || {};
 
   this.cachedRrtt = {};
@@ -43,7 +44,11 @@ GettextPlease.prototype = {
     if (this.hasKey(key)) {
       return this.data[key];
     } else {
-      return key;
+      if (this.processMissingKey != null) {
+        return this.processMissingKey(key);
+      } else {
+        return key;
+      }
     }
   },
 
@@ -54,7 +59,11 @@ GettextPlease.prototype = {
       if (this.processMissingAsKey) {
         return applyCtx(key, ctx);
       } else {
-        return key;
+        if (this.processMissingKey != null) {
+          return this.processMissingKey(key, ctx);
+        } else {
+          return key;
+        }
       }
     }
   },
@@ -64,7 +73,6 @@ GettextPlease.prototype = {
   },
 
   gettextr: function(key, ctx) {
-    var template = this.gettext(key);
     if (this.hasKey(key) || this.processMissingAsKey) {
       if (!this.cachedRrtt[key]) {
         this.cachedRrtt[key] = rrtt.compile(this.gettext(key));
@@ -72,7 +80,11 @@ GettextPlease.prototype = {
 
       return this.cachedRrtt[key](ctx);
     } else {
-      return [key];
+      if (this.processMissingKey != null) {
+        return this.processMissingKey(key, ctx);
+      } else {
+        return [key];
+      }
     }
   },
 
