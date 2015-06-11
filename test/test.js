@@ -249,7 +249,7 @@ describe('processMissingKey option', function() {
     );
   });
 
-  it('should prcess existing key as regular', function() {
+  it('should process existing key as regular', function() {
     var opts = Object.create(enOpts);
 
     opts.processMissingKey = function(key, ctx) {
