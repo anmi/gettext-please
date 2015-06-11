@@ -105,7 +105,7 @@ gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
 */
 ```
 
-If you want manually handle missing key, specify option processMissingKey
+If you want manually handle missing key, specify processMissingKey option
 ```js
 var gettextPlease = new GettextPlease({
   processMissingKey: function(key, params) {
@@ -118,6 +118,26 @@ var gettextPlease = new GettextPlease({
 gettextPlease.gettextp('userGreetings', {username: 'anmi'});
 /* =>
 'Missing key: userGreetings'
+*/
+```
+
+Most of gettextn calls have one number parameter, so you can specify default key for it
+```js
+var gettextPlease = new GettextPlease({
+  language: 'en',
+  defaultPluralKey: 'count',
+  pluralizeKey: function(key, num) {
+    return key + '.plural' + plural(this.language, num)
+  }
+  data: {
+    'applesCount.plural0': '{count} apple',
+    'applesCount.plural1': '{count} apples',
+  }
+});
+
+gettextPlease.gettextn('applesCount', 5);
+/* =>
+'5 apples'
 */
 ```
 

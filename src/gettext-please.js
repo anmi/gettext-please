@@ -15,6 +15,7 @@ function GettextPlease(opts) {
   this.pluralizeKey = opts.pluralizeKey;
   this.processMissingAsKey = opts.processMissingAsKey;
   this.processMissingKey = opts.processMissingKey;
+  this.defaultPluralKey = opts.defaultPluralKey;
   this.defaultRichParams = opts.defaultRichParams || {};
 
   this.cachedRrtt = {};
@@ -34,6 +35,14 @@ GettextPlease.prototype = {
     methodsToBind.forEach(function(key) {
       self[key] = self[key].bind(self);
     });
+  },
+
+  genPluralCtx: function(num) {
+    var ctx = {};
+
+    ctx[this.defaultPluralKey] = num;
+
+    return ctx;
   },
 
   hasKey: function(key) {
@@ -69,6 +78,10 @@ GettextPlease.prototype = {
   },
 
   gettextn: function(key, num, ctx) {
+    if (ctx == null && this.defaultPluralKey != null) {
+      ctx = this.genPluralCtx(num);
+    }
+
     return this.gettextp(this.pluralizeKey(key, num), ctx);
   },
 
@@ -89,6 +102,10 @@ GettextPlease.prototype = {
   },
 
   gettextrn: function(key, num, ctx) {
+    if (ctx == null && this.defaultPluralKey != null) {
+      ctx = this.genPluralCtx(num);
+    }
+
     return this.gettextr(this.pluralizeKey(key, num), ctx);
   }
 };

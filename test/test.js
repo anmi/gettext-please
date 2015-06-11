@@ -265,3 +265,29 @@ describe('processMissingKey option', function() {
     );
   });
 });
+
+describe('defaultPluralKey', function() {
+  it('should generate ctx from defaultPluralKey option', function() {
+    var opts = Object.create(enOpts);
+
+    opts.defaultPluralKey = 'count';
+
+    assert.equal(
+      (new GettextPlease(opts))
+        .gettextn('applesCount', 1),
+      '1 apple'
+    );
+
+    assert.equal(
+      (new GettextPlease(opts))
+        .gettextn('applesCount', 2),
+      '2 apples'
+    );
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .gettextrn('applesCount', 2),
+      ['2 apples']
+    );
+  });
+});
