@@ -1,4 +1,5 @@
 # gettext-please
+[![Travic CI](https://travis-ci.org/anmi/gettext-please.svg?branch=master)](https://travis-ci.org/anmi/gettext-please)
 
 Javascript gettext implementation for react components.
 
