@@ -27,9 +27,9 @@ GettextPlease.prototype = {
   bindMethods: function() {
     var self = this,
       methodsToBind = [
-        'gettext', 'gettextp',
-        'gettextn', 'gettextr',
-        'gettextrn', 'pluralizeKey'
+        'gettext', 'pgettext',
+        'ngettext', 'rgettext',
+        'rngettext', 'pluralizeKey'
       ];
 
     methodsToBind.forEach(function(key) {
@@ -61,7 +61,7 @@ GettextPlease.prototype = {
     }
   },
 
-  gettextp: function(key, ctx) {
+  pgettext: function(key, ctx) {
     if (this.hasKey(key)) {
       return applyCtx(this.gettext(key), ctx);
     } else {
@@ -77,15 +77,15 @@ GettextPlease.prototype = {
     }
   },
 
-  gettextn: function(key, num, ctx) {
+  ngettext: function(key, num, ctx) {
     if (ctx == null && this.defaultPluralKey != null) {
       ctx = this.genPluralCtx(num);
     }
 
-    return this.gettextp(this.pluralizeKey(key, num), ctx);
+    return this.pgettext(this.pluralizeKey(key, num), ctx);
   },
 
-  gettextr: function(key, ctx) {
+  rgettext: function(key, ctx) {
     if (this.hasKey(key) || this.processMissingAsKey) {
       if (!this.cachedRrtt[key]) {
         this.cachedRrtt[key] = rrtt.compile(this.gettext(key));
@@ -101,12 +101,12 @@ GettextPlease.prototype = {
     }
   },
 
-  gettextrn: function(key, num, ctx) {
+  rngettext: function(key, num, ctx) {
     if (ctx == null && this.defaultPluralKey != null) {
       ctx = this.genPluralCtx(num);
     }
 
-    return this.gettextr(this.pluralizeKey(key, num), ctx);
+    return this.rgettext(this.pluralizeKey(key, num), ctx);
   }
 };
 

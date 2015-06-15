@@ -62,7 +62,7 @@ module.exports = new GettextPlease({
 
 Using in components
 ```jsx
-var {gettextr, gettextn} = require('your_i18_module');
+var {rgettext, ngettext} = require('your_i18_module');
 
 gettextr('youGotMessages', {
   username: 'anmi',
@@ -72,12 +72,12 @@ gettextr('youGotMessages', {
 ['Hi, anmi, you got new ', <messagesLink>messages</messagesLink>, '!']
 */
 
-gettextn('applesCount', 5, {count: 5});
+ngettext('applesCount', 5, {count: 5});
 /* =>
 '5 apples'
 */
 ```
-You can use methods gettextr and gettextrn if you need to wrap part of message
+You can use methods rgettext and rngettext if you need to wrap part of message
 into component.
 
 In case of missing key, you can process key as value, or keep key as is
@@ -87,7 +87,7 @@ var gettextPlease = new GettextPlease({
   data: {}
 });
 
-gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
+gettextPlease.pgettext('Hello, {username}', {username: 'anmi'});
 /* =>
 'Hello, {username}'
 */
@@ -99,7 +99,7 @@ var gettextPlease = new GettextPlease({
   data: {}
 });
 
-gettextPlease.gettextp('Hello, {username}', {username: 'anmi'});
+gettextPlease.pgettext('Hello, {username}', {username: 'anmi'});
 /* =>
 'Hello, anmi'
 */
@@ -115,13 +115,13 @@ var gettextPlease = new GettextPlease({
   data: {}
 });
 
-gettextPlease.gettextp('userGreetings', {username: 'anmi'});
+gettextPlease.pgettext('userGreetings', {username: 'anmi'});
 /* =>
 'Missing key: userGreetings'
 */
 ```
 
-Most of gettextn calls have one number parameter, so you can specify default key for it
+Most of ngettext calls have one number parameter, so you can specify default key for it
 ```js
 var gettextPlease = new GettextPlease({
   language: 'en',
@@ -135,7 +135,7 @@ var gettextPlease = new GettextPlease({
   }
 });
 
-gettextPlease.gettextn('applesCount', 5);
+gettextPlease.ngettext('applesCount', 5);
 /* =>
 '5 apples'
 */
@@ -145,9 +145,9 @@ All methods
 ```js
 Returns string
 .gettext(key); // gettext without context
-.gettextp(key, context); // parametrized gettext
-.gettextn(key, num, context); // .gettextp with pluralization by num
+.pgettext(key, context); // parametrized gettext
+.ngettext(key, num, context); // .gettextp with pluralization by num
 Returns array
-.gettextr(key, context); // parametrized gettext with wrapping functions as arguments
-.gettextrn(key, num, context); // .gettextr with pluralization by num
+.rgettext(key, context); // parametrized gettext with wrapping functions as arguments
+.rngettext(key, num, context); // .gettextr with pluralization by num
 ```

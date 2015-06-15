@@ -68,12 +68,12 @@ describe('gettext', function() {
   });
 });
 
-describe('gettextp', function() {
+describe('pgettext', function() {
   it('should parametrize gettext out with params', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     assert.equal(
-      gettextPlease.gettextp('userGreetings', {username: 'anmi'}),
+      gettextPlease.pgettext('userGreetings', {username: 'anmi'}),
       'Hello, anmi'
     );
   });
@@ -81,7 +81,7 @@ describe('gettextp', function() {
   it('should be able to fallback and return key', function() {
     assert.deepEqual(
       (new GettextPlease(enOpts))
-        .gettextp('missing {key}', {
+        .pgettext('missing {key}', {
           key: 'shouldn\t pass'
         }),
       'missing {key}'
@@ -95,7 +95,7 @@ describe('gettextp', function() {
 
     assert.deepEqual(
       (new GettextPlease(opts))
-        .gettextp('you shall {key}', {
+        .pgettext('you shall {key}', {
           key: 'pass'
         }),
       'you shall pass'
@@ -103,31 +103,31 @@ describe('gettextp', function() {
   });
 });
 
-describe('gettextn', function() {
+describe('ngettext', function() {
   it('should pluralize key', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     assert.equal(
-      gettextPlease.gettextn('applesCount', 1, {count: 1}), 
+      gettextPlease.ngettext('applesCount', 1, {count: 1}), 
       '1 apple'
     );
     assert.equal(
-      gettextPlease.gettextn('applesCount', 0, {count: 0}), 
+      gettextPlease.ngettext('applesCount', 0, {count: 0}), 
       '0 apples'
     );
     assert.equal(
-      gettextPlease.gettextn('applesCount', 2, {count: 2}), 
+      gettextPlease.ngettext('applesCount', 2, {count: 2}), 
       '2 apples'
     );
   });
 });
 
-describe('gettextr', function() {
+describe('rgettext', function() {
   it('return array with a single string if there is no functions in params', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     assert.deepEqual(
-      gettextPlease.gettextr('userGreetings', {username: 'anmi'}),
+      gettextPlease.rgettext('userGreetings', {username: 'anmi'}),
       ['Hello, anmi']
     );
   });
@@ -136,7 +136,7 @@ describe('gettextr', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     assert.deepEqual(
-      gettextPlease.gettextr('youGotMessages', {
+      gettextPlease.rgettext('youGotMessages', {
         username: 'anmi',
         messagesLink: function(children) {
           return {linkObj: children};
@@ -150,7 +150,7 @@ describe('gettextr', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     assert.deepEqual(
-      gettextPlease.gettextr('nestedTags', {
+      gettextPlease.rgettext('nestedTags', {
         foo: function(children) {
           return {
             tagName: 'foo',
@@ -183,7 +183,7 @@ describe('gettextr', function() {
   it('should be able to fallback and return key', function() {
     assert.deepEqual(
       (new GettextPlease(enOpts))
-        .gettextr('missing {key}', {
+        .rgettext('missing {key}', {
           key: 'shouldn\t pass'
         }),
       ['missing {key}']
@@ -197,7 +197,7 @@ describe('gettextr', function() {
 
     assert.deepEqual(
       (new GettextPlease(opts))
-        .gettextr('you shall {key}', {
+        .rgettext('you shall {key}', {
           key: 'pass'
         }),
       ['you shall pass']
@@ -205,8 +205,8 @@ describe('gettextr', function() {
   });
 });
 
-describe('gettextrn', function() {
-  it('should act exactly like gettextn without wrappers', function() {
+describe('rgettextn', function() {
+  it('should act exactly like ngettext without wrappers', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
     var numbers = [1, 2, 3, 4, 5, 6];
@@ -216,8 +216,8 @@ describe('gettextrn', function() {
       var gettextPlease = new GettextPlease(opts);
       numbers.forEach(function(num) {
         assert.deepEqual(
-          gettextPlease.gettextrn('applesCount', num, {count: num}),
-          [gettextPlease.gettextn('applesCount', num, {count: num})]
+          gettextPlease.rngettext('applesCount', num, {count: num}),
+          [gettextPlease.ngettext('applesCount', num, {count: num})]
         );
       });
     });
@@ -234,7 +234,7 @@ describe('processMissingKey option', function() {
 
     assert.deepEqual(
       (new GettextPlease(opts))
-        .gettextr('someMissing.key', {
+        .rgettext('someMissing.key', {
           foo: 'bar'
         }),
       'KEY MISSING someMissing.key'
@@ -242,7 +242,7 @@ describe('processMissingKey option', function() {
 
     assert.deepEqual(
       (new GettextPlease(opts))
-        .gettextp('someMissing.key', {
+        .pgettext('someMissing.key', {
           foo: 'bar'
         }),
       'KEY MISSING someMissing.key'
@@ -258,7 +258,7 @@ describe('processMissingKey option', function() {
 
     assert.equal(
       (new GettextPlease(opts))
-        .gettextp('userGreetings', {
+        .pgettext('userGreetings', {
           username: 'anmi'
         }),
       'Hello, anmi'
@@ -274,19 +274,19 @@ describe('defaultPluralKey', function() {
 
     assert.equal(
       (new GettextPlease(opts))
-        .gettextn('applesCount', 1),
+        .ngettext('applesCount', 1),
       '1 apple'
     );
 
     assert.equal(
       (new GettextPlease(opts))
-        .gettextn('applesCount', 2),
+        .ngettext('applesCount', 2),
       '2 apples'
     );
 
     assert.deepEqual(
       (new GettextPlease(opts))
-        .gettextrn('applesCount', 2),
+        .rngettext('applesCount', 2),
       ['2 apples']
     );
   });
