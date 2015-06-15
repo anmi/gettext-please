@@ -19,7 +19,7 @@
   "author": "Andrei Miroshnik",
   "license": "MIT",
   "homepage": "https://github.com/anmi/gettext-please",
-  "dependcies": {
+  "dependencies": {
     "react-rich-text-template": "^0.0.2"
   },
   "devDependencies": {
