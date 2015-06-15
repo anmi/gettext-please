@@ -64,7 +64,7 @@ Using in components
 ```jsx
 var {rgettext, ngettext} = require('your_i18_module');
 
-gettextr('youGotMessages', {
+rgettext('youGotMessages', {
   username: 'anmi',
   messagesLink: (children) => <messagesLink>{children}</messagesLink>
 });
@@ -146,8 +146,8 @@ All methods
 Returns string
 .gettext(key); // gettext without context
 .pgettext(key, context); // parametrized gettext
-.ngettext(key, num, context); // .gettextp with pluralization by num
+.ngettext(key, num, context); // .pgettext with pluralization by num
 Returns array
 .rgettext(key, context); // parametrized gettext with wrapping functions as arguments
-.rngettext(key, num, context); // .gettextr with pluralization by num
+.rngettext(key, num, context); // .rgettext with pluralization by num
 ```
