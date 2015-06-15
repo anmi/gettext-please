@@ -23,7 +23,6 @@
     "react-rich-text-template": "^0.0.2"
   },
   "devDependencies": {
-    "react-rich-text-template": "^0.0.2",
     "mocha": "^2.2.1",
     "chai": "^2.3.0"
   }
