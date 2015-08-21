@@ -1,9 +1,22 @@
 var rrtt = require('react-rich-text-template');
+var objectAssign = require('object-assign');
 
 // TODO: escape template tags
-function applyCtx(str, ctx) {
+function applyCtx(str, ctx, opts) {
   return str.replace(/{[^{}]+}/g, function(key) {
-    var value = ctx[key.replace(/[{}]+/g, "")];
+    var param = key.replace(/[{}]+/g, "");
+    var value = ctx[param];
+
+    if (value === undefined &&
+        opts.processMissingParam) {
+      value = opts.processMissingParam(
+        opts.key,
+        param,
+        null,
+        null,
+        true
+      );
+    }
 
     return value;
   });
@@ -17,6 +30,7 @@ function GettextPlease(opts) {
   this.processMissingKey = opts.processMissingKey;
   this.defaultPluralKey = opts.defaultPluralKey;
   this.defaultRichParams = opts.defaultRichParams || {};
+  this.processMissingParam = opts.processMissingParam;
 
   this.cachedRrtt = {};
 
@@ -62,11 +76,17 @@ GettextPlease.prototype = {
   },
 
   pgettext: function(key, ctx) {
+    var opts = {
+        key: key,
+        processMissingParam:
+          this.processMissingParam
+      };
+
     if (this.hasKey(key)) {
-      return applyCtx(this.gettext(key), ctx);
+      return applyCtx(this.gettext(key), ctx, opts);
     } else {
       if (this.processMissingAsKey) {
-        return applyCtx(key, ctx);
+        return applyCtx(key, ctx, opts);
       } else {
         if (this.processMissingKey != null) {
           return this.processMissingKey(key, ctx);
@@ -86,9 +106,24 @@ GettextPlease.prototype = {
   },
 
   rgettext: function(key, ctx) {
+    var self = this;
+
     if (this.hasKey(key) || this.processMissingAsKey) {
       if (!this.cachedRrtt[key]) {
-        this.cachedRrtt[key] = rrtt.compile(this.gettext(key));
+        var rrttOpts = objectAssign({}, rrtt.defaultConfig, {
+            processMissingParam: self.processMissingParam &&
+              function(paramName, children, idx) {
+                return self.processMissingParam(
+                  key,
+                  paramName,
+                  children,
+                  idx,
+                  false
+                );
+              }
+            });
+
+        this.cachedRrtt[key] = rrtt.compile(this.gettext(key), rrttOpts);
       }
 
       return this.cachedRrtt[key](ctx);

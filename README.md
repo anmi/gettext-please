@@ -121,7 +121,7 @@ gettextPlease.pgettext('userGreetings', {username: 'anmi'});
 */
 ```
 
-Most of ngettext calls have one number parameter, so you can specify default key for it
+Most of ngettext calls have single number parameter, so you can specify default key for it
 ```js
 var gettextPlease = new GettextPlease({
   language: 'en',
@@ -140,6 +140,39 @@ gettextPlease.ngettext('applesCount', 5);
 '5 apples'
 */
 ```
+
+Define method processMissingParam to handle undeclared parameter.
+```jsx
+var gettextPlease = new GettextPlease({
+  language: 'en',
+  processMissingParam: function (key, paramName, content,
+                                 index, shouldBeString) {
+    if (shouldBeString) {
+      return 'MISSING PARAM (' + paramName + ')';
+    } else {
+      return <MissingParam key={index}>paramName</MissingParam>
+    }
+  },
+  data: {
+    'greetings': 'Hello {world}!',
+    'greetings2': 'Hello <wrap>world</wrap>'
+  }
+});
+
+gettextPlease.pgettext('greetings', {});
+/* =>
+'Hello MISSING PARAM (world)'
+*/
+
+gettextPlease.rgettext('greetings', {});
+/* =>
+[
+  'Hello ',
+  <MissingParam key=1>wrap</MissingParam>
+]
+*/
+```
+
 
 All methods
 ```js

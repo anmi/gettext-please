@@ -205,7 +205,7 @@ describe('rgettext', function() {
   });
 });
 
-describe('rgettextn', function() {
+describe('rngettext', function() {
   it('should act exactly like ngettext without wrappers', function() {
     var gettextPlease = new GettextPlease(enOpts);
 
@@ -288,6 +288,39 @@ describe('defaultPluralKey', function() {
       (new GettextPlease(opts))
         .rngettext('applesCount', 2),
       ['2 apples']
+    );
+  });
+});
+
+describe('processMissingParam option', function() {
+  it('should handle missing parameter', function() {
+    var opts = Object.create(enOpts);
+
+    opts.processMissingParam =
+      function(key, paramName, content, index, shouldBeString) {
+        if (shouldBeString) {
+          return 'MISSING PARAM (' + paramName + ')';
+        } else {
+          return {
+            key: key,
+            paramName: paramName
+          };
+        }
+      };
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .rgettext('youGotMessages', {username: 'me'}),
+      [
+        'Hi, me, you got new ',
+        {paramName: 'messagesLink', key: 'youGotMessages'},
+        '!'
+      ]
+    );
+    assert.equal(
+      (new GettextPlease(opts))
+        .pgettext('userGreetings', {}),
+      'Hello, MISSING PARAM (username)'
     );
   });
 });
