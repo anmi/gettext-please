@@ -203,6 +203,17 @@ describe('rgettext', function() {
       ['you shall pass']
     );
   });
+
+  it('should process object as textPlaceholder', function() {
+    var opts = Object.create(enOpts);
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .rgettext('userGreetings', {
+          username: {obj: 'pass'}
+        }),
+      ['Hello, ', {obj: 'pass'}]
+    );
+  });
 });
 
 describe('rngettext', function() {
