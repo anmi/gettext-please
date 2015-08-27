@@ -51,6 +51,7 @@ var enOpts = {
     'applesCount.plural0': '{count} apple',
     'applesCount.plural1': '{count} apples',
     'userGreetings': 'Hello, {username}',
+    'brokenKey': 'This </is> broken key',
     'youGotMessages':
       'Hi, {username}, you got new <messagesLink>messages</messagesLink>!',
     'nestedTags': 'Test <foo>nested<bar>tags</bar></foo>'
@@ -333,5 +334,33 @@ describe('processMissingParam option', function() {
         .pgettext('userGreetings', {}),
       'Hello, MISSING PARAM (username)'
     );
+  });
+});
+
+describe('debug: false option', function() {
+  it('shouldn\'t throw errors in case of broken value', function() {
+    var opts = Object.create(enOpts);
+
+    opts.debug = false;
+    opts.processMissingAsKey = true;
+
+    assert.deepEqual(
+      (new GettextPlease(opts))
+        .rgettext('brokenKey', {}),
+      ['brokenKey']
+    );
+  });
+});
+
+describe('debug: true option', function() {
+  it('should throw errors in case of broken value', function() {
+    var opts = Object.create(enOpts);
+
+    opts.debug = true;
+    opts.processMissingAsKey = true;
+
+    chai.expect(new GettextPlease(opts)
+        .rgettext.bind(null, 'brokenKey', {}))
+      .to.throw(Error);
   });
 });

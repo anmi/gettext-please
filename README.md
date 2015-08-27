@@ -173,6 +173,29 @@ gettextPlease.rgettext('greetings', {});
 */
 ```
 
+debug option
+```js
+var gettextPlease = new GettextPlease({
+  language: 'en',
+  debug: true,
+  data: {
+    'brokenKey': 'Contains extra </close> tag'
+  }
+});
+
+gettextPlease('brokenKey', {}); // throws error
+
+var gettextPlease = new GettextPlease({
+  language: 'en',
+  debug: false,
+  processMissingAsKey
+  data: {
+    'brokenKey': 'Contains extra </close> tag'
+  }
+});
+
+gettextPlease('brokenKey', {}); // ['brokenKey']
+```
 
 All methods
 ```js

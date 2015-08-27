@@ -31,6 +31,7 @@ function GettextPlease(opts) {
   this.defaultPluralKey = opts.defaultPluralKey;
   this.defaultRichParams = opts.defaultRichParams || {};
   this.processMissingParam = opts.processMissingParam;
+  this.debug = opts.debug;
 
   this.cachedRrtt = {};
 
@@ -110,20 +111,32 @@ GettextPlease.prototype = {
 
     if (this.hasKey(key) || this.processMissingAsKey) {
       if (!this.cachedRrtt[key]) {
-        var rrttOpts = objectAssign({}, rrtt.defaultConfig, {
-            processMissingParam: self.processMissingParam &&
-              function(paramName, children, idx) {
-                return self.processMissingParam(
-                  key,
-                  paramName,
-                  children,
-                  idx,
-                  false
-                );
-              }
+        try {
+          var rrttOpts = objectAssign({}, rrtt.defaultConfig, {
+              processMissingParam: self.processMissingParam &&
+                function(paramName, children, idx) {
+                  return self.processMissingParam(
+                    key,
+                    paramName,
+                    children,
+                    idx,
+                    false
+                  );
+                }
             });
 
-        this.cachedRrtt[key] = rrtt.compile(this.gettext(key), rrttOpts);
+          this.cachedRrtt[key] = rrtt.compile(this.gettext(key), rrttOpts);
+        } catch (e) {
+          if (this.debug) {
+            throw e;
+          } else {
+            if (this.processMissingKey != null) {
+              return this.processMissingKey(key, ctx);
+            } else {
+              return [key];
+            }
+          }
+        }
       }
 
       return this.cachedRrtt[key](ctx);

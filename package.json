@@ -20,7 +20,7 @@
   "license": "MIT",
   "homepage": "https://github.com/anmi/gettext-please",
   "dependencies": {
-    "react-rich-text-template": "^0.0.5",
+    "react-rich-text-template": "^0.1.0",
     "object-assign": "^4.0.1"
   },
   "devDependencies": {
